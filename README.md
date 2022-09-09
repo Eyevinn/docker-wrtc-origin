@@ -9,7 +9,7 @@ version: "3.7"
 
 services:
   sfu:
-    image: eyevinntechnology/wrtc-sfu:latest
+    image: eyevinntechnology/wrtc-sfu:v0.1.0
     network_mode: "host"
     cap_add:
       - SYS_NICE
@@ -25,9 +25,10 @@ services:
     environment:
       - PORT=8080
       - EXT_PORT=8080
-      - SMB_URL=http://localhost:8280/conferences/
-      - WHPP_API_URL=http://<WHPP-EGRESS-HOST>:8201/api
-      - WHPP_EGRESS_URL=http://<WHPP-EGRESS-HOST>:8201/whpp
+      - ORIGIN_SFU_URL=http://localhost:8280/conferences/
+      - EDGE_LIST_CONFIG=/etc/edge-list-config.json
+    volumes:
+      - ./edge-list-config.json:/etc/edge-list-config.json
 ```
 
 ## Configuration
@@ -37,7 +38,17 @@ Default configuration can be changed by setting these environment variables:
 - `EXT_PORT`
 - `HOSTNAME`
 - `USE_HTTPS`
-- `SMB_URL`
-- `WHPP_API_URL`
-- `WHPP_EGRESS_URL`
+- `ORIGIN_SFU_URL` : Url to SFU management API
+- `EDGE_LIST_CONFIG` : path to a JSON file containing a list of edges
+
+Example of edge list configuration json.
+
+```
+[
+    { 
+        "sfuApiUrl": "http://sfu-edgeA:8380/conferences/", 
+        "egressApiUrl": "http://egressA:8300/api"
+    }
+]
+```
 
