@@ -10,6 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eyevinn/whip-endpoint": "^0.15.1"
+    "@eyevinn/whip-endpoint": "^1.0.0"
   }
 }

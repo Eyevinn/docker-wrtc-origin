@@ -2,26 +2,60 @@ version: "3.7"
 
 services:
   sfu:
-    image: eyevinntechnology/wrtc-sfu:latest
-    network_mode: "host"
+    image: eyevinntechnology/wrtc-sfu:v0.1.0
     cap_add:
       - SYS_NICE
     ulimits:
       rtprio: 99
     environment:
       - HTTP_PORT=8280
+      - UDP_PORT=13000
+      - IPV4_ADDR=127.0.0.1
     logging:
       driver: "local"
       options:
         max-size: 10m
+    ports:
+      - "8280:8280/tcp"
+      - "13000:13000/udp"
   ingest:
     image: eyevinntechnology/wrtc-origin:latest
     depends_on:
       - sfu
-    network_mode: "host"
+      - sfu-edge
+      - egress
     environment:
       - PORT=8200
       - EXT_PORT=8200
-      - SMB_URL=http://localhost:8280/conferences/
-      - WHPP_API_URL=http://localhost:8201/api
-      - WHPP_EGRESS_URL=http://localhost:8201/whpp
+      - ORIGIN_SFU_URL=http://sfu:8280/conferences/
+      - EDGE_LIST_CONFIG=/etc/edge-list-config.json
+    ports:
+      - "8200:8200/tcp"
+    volumes:
+      - ./example-edge-list-config.json:/etc/edge-list-config.json
+  sfu-edge:
+    image: eyevinntechnology/wrtc-sfu:v0.1.0
+    cap_add:
+      - SYS_NICE
+    ulimits:
+      rtprio: 99
+    environment:
+      - HTTP_PORT=8380
+      - UDP_PORT=12000
+      - IPV4_ADDR=127.0.0.1
+    logging:
+      driver: "local"
+      options:
+        max-size: 10m
+    ports:
+      - "8380:8380/tcp"
+      - "12000:12000/udp"
+  egress:
+    image: eyevinntechnology/wrtc-whpp:latest
+    environment:
+      - PORT=8300
+      - EXT_PORT=8300
+      - HOSTNAME=localhost
+      - SMB_URL=http://sfu-edge:8380/conferences/
+    ports:
+      - "8300:8300/tcp"      

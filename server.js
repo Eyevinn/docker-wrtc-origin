@@ -7,11 +7,14 @@ const whipEndpoint = new WhipEndpoint({
   https: process.env.USE_HTTPS && process.env.USE_HTTPS === "true",
   enabledWrtcPlugins: [ "sfu-broadcaster" ],
 });
+whipEndpoint.setOriginSfuUrl(process.env.ORIGIN_SFU_URL);
 
-const client = new BroadcasterClient({
-  url: process.env.WHPP_API_URL,
-  egressUrl: process.env.WHPP_EGRESS_URL
+const edgeList = require(process.env.EDGE_LIST_CONFIG);
+edgeList.forEach((pair) => {
+  whipEndpoint.registerBroadcasterClient({
+    client: new BroadcasterClient(pair.egressApiUrl),
+    sfuUrl: pair.sfuApiUrl,
+  });
 });
 
-whipEndpoint.registerBroadcasterClient(client);
 whipEndpoint.listen();
