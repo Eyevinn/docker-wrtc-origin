@@ -9,7 +9,7 @@ version: "3.7"
 
 services:
   sfu:
-    image: eyevinntechnology/wrtc-sfu:v0.1.0
+    image: eyevinntechnology/wrtc-sfu:v0.2.0
     network_mode: "host"
     cap_add:
       - SYS_NICE
@@ -17,6 +17,7 @@ services:
       rtprio: 99
     environment:
       - HTTP_PORT=8280
+      - API_KEY=example
   ingest:
     image: eyevinntechnology/wrtc-origin:latest
     depends_on:
@@ -26,6 +27,7 @@ services:
       - PORT=8080
       - EXT_PORT=8080
       - ORIGIN_SFU_URL=http://localhost:8280/conferences/
+      - SFU_API_KEY=example
       - EDGE_LIST_CONFIG=/etc/edge-list-config.json
     volumes:
       - ./edge-list-config.json:/etc/edge-list-config.json
