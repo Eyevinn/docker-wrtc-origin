@@ -39,6 +39,7 @@ Default configuration can be changed by setting these environment variables:
 - `HOSTNAME`
 - `USE_HTTPS`
 - `ORIGIN_SFU_URL` : Url to SFU management API
+- `SFU_API_KEY` : API-Key for SFU management API
 - `EDGE_LIST_CONFIG` : path to a JSON file containing a list of edges
 
 Example of edge list configuration json.
