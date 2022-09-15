@@ -8,6 +8,7 @@ const whipEndpoint = new WhipEndpoint({
   enabledWrtcPlugins: [ "sfu-broadcaster" ],
 });
 whipEndpoint.setOriginSfuUrl(process.env.ORIGIN_SFU_URL);
+whipEndpoint.setSfuApiKey(process.env.SFU_API_KEY);
 
 const edgeList = require(process.env.EDGE_LIST_CONFIG);
 edgeList.forEach((pair) => {
