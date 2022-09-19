@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   sfu:
-    image: eyevinntechnology/wrtc-sfu:v0.2.0
+    image: eyevinntechnology/wrtc-sfu:v0.3.0
     cap_add:
       - SYS_NICE
     ulimits:
@@ -37,7 +37,7 @@ services:
     volumes:
       - ./example-edge-list-config.json:/etc/edge-list-config.json
   sfu-edge:
-    image: eyevinntechnology/wrtc-sfu:v0.2.0
+    image: eyevinntechnology/wrtc-sfu:v0.3.0
     cap_add:
       - SYS_NICE
     ulimits:
