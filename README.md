@@ -9,7 +9,7 @@ version: "3.7"
 
 services:
   sfu:
-    image: eyevinntechnology/wrtc-sfu:v0.2.0
+    image: eyevinntechnology/wrtc-sfu:v0.3.0
     network_mode: "host"
     cap_add:
       - SYS_NICE
